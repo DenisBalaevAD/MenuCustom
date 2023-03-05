@@ -20,4 +20,5 @@
         android:onClick="onClick"
         android:text="@string/dialog_2">
     </Button>
+
 </LinearLayout>
