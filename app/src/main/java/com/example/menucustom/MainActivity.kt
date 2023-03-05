@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
             val filePath = cursor.getString(0);
             cursor.close();*/
 
-            Toast.makeText(this,chosenImageUri.toString(),Toast.LENGTH_LONG).show()
+            Toast.makeText(this,chosenImageUri!!.path.toString(),Toast.LENGTH_LONG).show()
             //Toast.makeText(this,"OK",Toast.LENGTH_LONG).show()
 
             /*val intent = Intent(Intent.ACTION_VIEW)
@@ -128,10 +128,10 @@ class MainActivity : AppCompatActivity() {
 
             startActivity(intent)*/
 
-            /*val intent = Intent(Intent.ACTION_INSTALL_PACKAGE)
-            intent.setDataAndType(Uri.parse(chosenImageUri.toString()), "application/vnd.android.package-archive")
+            val intent = Intent(Intent.ACTION_INSTALL_PACKAGE)
+            intent.setDataAndType(chosenImageUri, "application/vnd.android.package-archive")
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)*/
+            startActivity(intent)
 
             //install(chosenImageUri.toString())
 
@@ -147,15 +147,15 @@ class MainActivity : AppCompatActivity() {
                         startActivity(intent);
             }*/
 
-            val urlapk = FileProvider.getUriForFile(
+            /*val urlapk = FileProvider.getUriForFile(
                 this,
                 BuildConfig.APPLICATION_ID + ".fileProvider",
-                File(chosenImageUri?.path.toString())
+                File(chosenImageUri.toString())
             )
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setDataAndType(urlapk, "application/vnd.android.package-archive")
             intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            startActivity(intent)
+            startActivity(intent)*/
         }
     }
 
