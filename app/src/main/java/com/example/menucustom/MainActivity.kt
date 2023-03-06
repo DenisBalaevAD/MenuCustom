@@ -78,16 +78,19 @@ class MainActivity : AppCompatActivity() {
         //showBottomSheetDialog()
 
         binding.btnDlg2.setOnClickListener {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            //val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
-            intent.type = "*/*"
-            //intent.type = "application/vnd.android.package-archive"
+            //intent.type = "*/*"
+            intent.type = "application/vnd.android.package-archive"
+            //intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
             startActivityForResult(intent, 1)
 
             val editor = mSettings.edit()
             editor.putString("VALUE", "ОК")
             editor.apply()
         }
+
     }
 
     @Deprecated("Deprecated in Java")
@@ -97,71 +100,13 @@ class MainActivity : AppCompatActivity() {
         if(requestCode == 1 && resultCode == RESULT_OK){
             val chosenImageUri:Uri? =  data?.data
 
-           /*val cursor = contentResolver.query( chosenImageUri.to, null, null, null, null );
-            cursor!!.moveToFirst();
-            val filePath = cursor.getString(0);
-            cursor.close();*/
-
             Toast.makeText(this,chosenImageUri!!.path.toString(),Toast.LENGTH_LONG).show()
-            //Toast.makeText(this,"OK",Toast.LENGTH_LONG).show()
-
-            /*val intent = Intent(Intent.ACTION_VIEW)
-            val uri = Uri.fromFile(File(chosenImageUri.toString()))
-            intent.setDataAndType(uri,"application/vnd.android.package-archive")
-            startActivity(intent)*/
-
-            /*val installIntent = Intent(Intent.ACTION_VIEW)
-            installIntent.setDataAndType(
-                Uri.parse(filePath),
-                "application/vnd.android.package-archive"
-            )
-            startActivity(installIntent)*/
-
-
-            /*packageManager.canRequestPackageInstalls()
-            startActivity(Intent(android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES))*/
-
-            /*val intent = Intent(Intent.ACTION_INSTALL_PACKAGE)
-            intent.setDataAndType(
-                FileProvider.getUriForFile(
-                    this,
-                    "your.application.package.fileprovider",
-                    File(chosenImageUri.toString())
-                ), "application/vnd.android.package-archive"
-            )
-            intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-
-            startActivity(intent)*/
 
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setDataAndType(chosenImageUri, "application/vnd.android.package-archive")
             //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
             startActivity(intent)
-
-            //install(chosenImageUri.toString())
-
-            /*if(android.os.Build.VERSION.SDK_INT >= 29){
-                val intent = Intent(Intent.ACTION_INSTALL_PACKAGE);
-                intent.data = Uri.parse(chosenImageUri);
-                intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
-                startActivity(intent);
-            }else{
-                val intent = Intent(Intent.ACTION_VIEW);
-                //output file is the apk downloaded earlier
-                intent.setDataAndType(Uri.parse(chosenImageUri), "application/vnd.android.package- archive");
-                        startActivity(intent);
-            }*/
-
-            /*val urlapk = FileProvider.getUriForFile(
-                this,
-                BuildConfig.APPLICATION_ID + ".fileProvider",
-                File(chosenImageUri.toString())
-            )
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.setDataAndType(urlapk, "application/vnd.android.package-archive")
-            intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            startActivity(intent)*/
         }
     }
 
