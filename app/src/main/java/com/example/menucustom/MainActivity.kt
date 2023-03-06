@@ -8,11 +8,9 @@ import android.app.DialogFragment
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build.VERSION
 import android.os.Bundle
-import android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -20,9 +18,10 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.menucustom.databinding.ActivityMainBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.internal.ContextUtils.getActivity
-import java.io.File
+import org.apache.commons.io.IOUtils
+import java.io.*
+import java.nio.charset.StandardCharsets
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -109,35 +108,27 @@ class MainActivity : AppCompatActivity() {
             intent.setDataAndType(chosenImageUri, "application/vnd.android.package-archive")
             //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+
+            /*val bytes = toByteArrayUri(uri = chosenImageUri)
+            Log.d("BYTES",bytes.toString())
+
+            val encodedString = Base64.getEncoder().encodeToString(bytes)
+            val decodedBytes = Base64.getDecoder().decode(encodedString)
+            val decodedString = String(decodedBytes)
+
+            Log.d("BYTES",decodedString)*/
+
             startActivity(intent)
         }
     }
 
-    fun install(filename: String) {
-        val file = File(filename)
-        if (file.exists()) {
-            try {
-                val command: String
-                command = "adb install -r $filename"
-                val proc = Runtime.getRuntime().exec(arrayOf("su", "-c", command))
-                proc.waitFor()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
+    fun toByteArrayUri(uri: Uri): ByteArray?= IOUtils.toByteArray(contentResolver.openInputStream(uri))
+
 
     fun onClick(v: View) {
         when (v.id) {
             R.id.btnDlg1 -> dlg1!!.show(fragmentManager, "dlg1")
             else -> {}
         }
-    }
-
-    fun showBottomSheetDialog() {
-        val view: View = layoutInflater.inflate(R.layout.dialog1, null)
-        val dialog = BottomSheetDialog(this)
-        dialog.setContentView(view)
-        dialog.show()
     }
 }
