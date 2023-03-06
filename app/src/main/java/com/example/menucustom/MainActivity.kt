@@ -8,8 +8,11 @@ import android.app.DialogFragment
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build.VERSION
 import android.os.Bundle
+import android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -18,6 +21,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.menucustom.databinding.ActivityMainBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.internal.ContextUtils.getActivity
 import java.io.File
 
 
@@ -78,17 +82,17 @@ class MainActivity : AppCompatActivity() {
         //showBottomSheetDialog()
 
         binding.btnDlg2.setOnClickListener {
-            //val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            //val intent = Intent(Intent.ACTION_GET_CONTENT)
+            //val intent: Intent = Intent("android.intent.action.OPEN_DOCUMENT")
+
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             //intent.type = "*/*"
             intent.type = "application/vnd.android.package-archive"
             //intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
             startActivityForResult(intent, 1)
 
-            val editor = mSettings.edit()
-            editor.putString("VALUE", "ОК")
-            editor.apply()
+            mSettings.edit().putString("VALUE", "ОК").apply()
         }
 
     }
