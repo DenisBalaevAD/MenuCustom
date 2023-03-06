@@ -18,9 +18,15 @@
     </style>
 
     <style name="DialogStyle" parent="Base.Theme.AppCompat.Dialog">
-        <item name="android:windowMinWidthMajor">20%</item>
-        <item name="android:windowMinWidthMinor">20%</item>
-        <item name="windowFixedHeightMajor">55%</item>
-        <item name="windowFixedHeightMinor">55%</item>
+        <item name="android:windowMinWidthMajor">20%p</item>
+        <item name="android:windowMinWidthMinor">60%p</item>
+        <item name="windowFixedHeightMinor">20%p</item>
+        <item name="windowFixedHeightMajor">60%p</item>
+    </style>
+
+    <style name="DialogStyleUnderParagraph" parent="Base.Theme.AppCompat.Dialog">
+        <item name="android:windowMinWidthMajor">35%</item>//длина
+        <item name="windowFixedHeightMajor">95%</item>
+        <item name="windowFixedHeightMinor">95%</item>
     </style>
 </resources>

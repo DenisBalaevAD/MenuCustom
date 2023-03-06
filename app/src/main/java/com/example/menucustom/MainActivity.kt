@@ -5,7 +5,9 @@ import android.app.ActionBar
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.DialogFragment
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
@@ -14,7 +16,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import com.example.menucustom.databinding.ActivityMainBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.io.File
@@ -26,26 +27,17 @@ class MainActivity : AppCompatActivity() {
     var dlg1: DialogFragment? = null
     var dlg2: DialogFragment? = null
 
-    // The path to the root of this app's internal storage
-    private var mPrivateRootDir: File? = null
 
-    // The path to the "images" subdirectory
-    private var mImagesDir: File? = null
-
-    // Array of files in the images subdirectory
-    lateinit var mImageFiles: Array<File>
-
-    // Array of filenames corresponding to mImageFiles
-    lateinit var mImageFilenames: Array<String>
-    // Initialize the Activity
-
-    lateinit var chosenImageUri:Uri
+    lateinit var mSettings:SharedPreferences
+    private val PERMISSION_STORAGE = 101
 
     @SuppressLint("RtlHardcoded", "InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        mSettings = getSharedPreferences("MenuCustom", Context.MODE_PRIVATE);
 
         val dialog = Dialog(this,R.style.DialogStyle)
         val window = dialog.window
@@ -71,6 +63,15 @@ class MainActivity : AppCompatActivity() {
 
         alertDialog.show()
 
+        if(mSettings.contains("VALUE")) {
+            val text = mSettings.getString("VALUE", "")
+            binding.tv.text = text
+        }
+
+        if (!PermissionUtils.hasPermissions(this)) {
+            PermissionUtils.requestPermissions(this, PERMISSION_STORAGE)
+        }
+
         /*dlg1 = Dialog1()
         dlg2 = Dialog2()*/
 
@@ -82,6 +83,10 @@ class MainActivity : AppCompatActivity() {
             intent.type = "*/*"
             //intent.type = "application/vnd.android.package-archive"
             startActivityForResult(intent, 1)
+
+            val editor = mSettings.edit()
+            editor.putString("VALUE", "ОК")
+            editor.apply()
         }
     }
 
@@ -128,9 +133,10 @@ class MainActivity : AppCompatActivity() {
 
             startActivity(intent)*/
 
-            val intent = Intent(Intent.ACTION_INSTALL_PACKAGE)
+            val intent = Intent(Intent.ACTION_VIEW)
             intent.setDataAndType(chosenImageUri, "application/vnd.android.package-archive")
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
             startActivity(intent)
 
             //install(chosenImageUri.toString())
