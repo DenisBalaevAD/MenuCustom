@@ -76,11 +76,6 @@ class MainActivity : AppCompatActivity() {
             PermissionUtils.requestPermissions(this, PERMISSION_STORAGE)
         }
 
-        /*dlg1 = Dialog1()
-        dlg2 = Dialog2()*/
-
-        //showBottomSheetDialog()
-
         binding.btnDlg2.setOnClickListener {
             //val intent = Intent(Intent.ACTION_GET_CONTENT)
             //val intent: Intent = Intent("android.intent.action.OPEN_DOCUMENT")
@@ -95,6 +90,10 @@ class MainActivity : AppCompatActivity() {
             mSettings.edit().putString("VALUE", "ОК").apply()
         }
 
+        /*dlg1 = Dialog1()
+        dlg2 = Dialog2()*/
+
+        //showBottomSheetDialog()
     }
 
     @Deprecated("Deprecated in Java")
